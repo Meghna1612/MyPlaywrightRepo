@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import { userRegistration } from '../pages/registrationTest.page'
-import users from '../testData/users.json';
+import users from '../TestData/users.json';
 import { generateEmail } from '../utilities/randomData';
 import { login } from '../pages/loginTest.page';
 import { allBooks } from '../pages/books.page';
