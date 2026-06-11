@@ -60,22 +60,5 @@ test.describe('API Testing', () => {
 
     const email = generateEmail();
 
-    // get call to get list of books
-    const postLoginRes  = await request.post('https://demowebshop.tricentis.com/books',{
-      headers : {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      form: {
-        __RequestVerificationToken: token,
-        Email: email, // 👈 use your registered email
-        Password: users[0].password,
-      }
-
-    }
-    )
-
-    
-
-
   })
 })

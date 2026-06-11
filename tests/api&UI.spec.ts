@@ -16,3 +16,27 @@ test('Computers API + UI', async ({page}) =>  {
     await sectionComputer.selectOptions();
     console.log('name off the computer:', await sectionComputer.getComputerName());
 })
+
+test('API testing for the same', async ({request}) => {
+
+    const getCompRes = await request.get('https://demowebshop.tricentis.com/desktops');
+    expect(getCompRes.status()).toBe(200);
+
+    const html = await getCompRes.text();
+
+    const products = [
+        ...html.matchAll(/<h2 class="product-title">[\s\S]*?<a[^>]*>(.*?)<\/a>/g)
+    ];
+
+    products.forEach(product => {
+        console.log(product[1].trim());
+    });
+
+    // request.get()     → fetch page
+    // response.text()   → get HTML
+    // matchAll()        → find all matching product names
+    // forEach()         → loop through each product
+    // console.log()     → print product name
+
+  
+})
