@@ -7,6 +7,8 @@
 import { test, expect, request } from '@playwright/test';
 import { computerSection } from '../pages/api&UI.page';
 
+const desktopURL = 'https://demowebshop.tricentis.com/desktops';
+
 test.describe('Computer section testcases', () => {
 
     test('Computers API + UI', async ({ page }) => {
@@ -21,7 +23,7 @@ test.describe('Computer section testcases', () => {
 
     test('API testing for the same', async ({ request }) => {
 
-        const getCompRes = await request.get('https://demowebshop.tricentis.com/desktops');
+        const getCompRes = await request.get(desktopURL);
         expect(getCompRes.status()).toBe(200);
 
         const html = await getCompRes.text();
@@ -51,7 +53,7 @@ test.describe('Computer section testcases', () => {
 
     test('UI + API validation', async ({page, request}) => {
 
-        const apiURL = await request.get('https://demowebshop.tricentis.com/desktops');
+        const apiURL = await request.get(desktopURL);
 
         const HTML = await apiURL.text();
 
