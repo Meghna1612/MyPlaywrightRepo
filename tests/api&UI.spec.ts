@@ -38,20 +38,42 @@ test.describe('Computer section testcases', () => {
             console.log(product[1].trim());
         });
 
+        const productPrice = [...html.matchAll(/<span class="price actual-price">(.*?)<\/span>/g)];
+
+        expect(productPrice.length).toBeGreaterThan(0);
+
+        productPrice.forEach(price => {
+            console.log(price[1].trim());
+        });
+
         // request.get()     → fetch page
         // response.text()   → get HTML
         // matchAll()        → find all matching product names
         // forEach()         → loop through each product
         // console.log()     → print product name
+
+        for (let i = 0; i < products.length; i++) {
+            console.log(
+                `${products[i][1].trim()} - ${productPrice[i][1].trim()}`
+            );
+        }
+
+        products.forEach((product, index) => {
+            console.log(
+                product[1].trim(),
+                '-',
+                productPrice[index][1].trim()
+            );
+        });
     });
 
-    test('Negative scenario', async ({request}) => {
+    test('Negative scenario', async ({ request }) => {
 
-        const negRes = await request.get('https://demowebshop.tricentis.com/inavlidpage123');
+        const negRes = await request.get('https://demowebshop.tricentis.com/invalidpage123');
         expect(negRes.status()).toBe(404);
     });
 
-    test('UI + API validation', async ({page, request}) => {
+    test('UI + API validation', async ({ page, request }) => {
 
         const apiURL = await request.get(desktopURL);
 
@@ -62,9 +84,9 @@ test.describe('Computer section testcases', () => {
 
         const productSearch = resMatch.map(match => match[1].trim());
 
-        await page.goto('https://demowebshop.tricentis.com/desktops');
+        await page.goto(desktopURL);
 
-        for(const name of productSearch) { 
+        for (const name of productSearch) {
             await expect(page.getByText(name)).toBeVisible();
         }
 

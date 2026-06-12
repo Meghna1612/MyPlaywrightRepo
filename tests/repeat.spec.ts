@@ -53,6 +53,10 @@ test('POST-Login user',async ({request}) => {
 
     const html = await getLoginRes.text();
 
+    // Search specifically for the token field
+const tokenSnippet = html.substring(html.indexOf('RequestVerification'), html.indexOf('RequestVerification') + 200);
+console.log('Token area:', tokenSnippet);
+
     console.log('HTML snippet:', html.substring(0, 2000));
 
     const tokenMatch = html.match(/name="__RequestVerificationToken"[^>]*value="([^"]+)"/);

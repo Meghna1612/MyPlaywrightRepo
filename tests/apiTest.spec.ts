@@ -47,18 +47,18 @@ test.describe('API Testing', () => {
     console.log('📧 Registered Email:', uniqueEmail);
   });
 
-  test('POST-Login user',async ({request}) => {
-    const getLoginRes = await request.get('https://demowebshop.tricentis.com/login');
+  // test('POST-Login user',async ({request}) => {
+  //   const getLoginRes = await request.get('https://demowebshop.tricentis.com/login');
 
-    const html = await getLoginRes.text();
+  //   const html = await getLoginRes.text();
 
-    const tokenMatch = html.match(/name="__RequestVerificationToken"[^>]*value="([^"]+)"/);
+  //   const tokenMatch = html.match(/name="__RequestVerificationToken"[^>]*value="([^"]+)"/);
 
-    const token = tokenMatch ? tokenMatch[1] : '';
-    console.log('Token:', token);
-    expect(token).toBeTruthy();
+  //   const token = tokenMatch ? tokenMatch[1] : '';
+  //   console.log('Token:', token);
+  //   expect(token).toBeTruthy();
 
-    const email = generateEmail();
+  //   const email = generateEmail();
 
-  })
+  // })
 })
