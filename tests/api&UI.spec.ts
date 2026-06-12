@@ -4,39 +4,71 @@
 // 4. Get list of the computers present with prices
 
 
-import {test,expect,request} from '@playwright/test';
+import { test, expect, request } from '@playwright/test';
 import { computerSection } from '../pages/api&UI.page';
 
-test('Computers API + UI', async ({page}) =>  {
+test.describe('Computer section testcases', () => {
 
-    const sectionComputer= new computerSection(page);
-    await sectionComputer.navigateComputers();
-    await sectionComputer.computerDropdown();
-    await sectionComputer.computerChoice();
-    await sectionComputer.selectOptions();
-    console.log('name off the computer:', await sectionComputer.getComputerName());
-})
+    test('Computers API + UI', async ({ page }) => {
 
-test('API testing for the same', async ({request}) => {
+        const sectionComputer = new computerSection(page);
+        await sectionComputer.navigateComputers();
+        await sectionComputer.computerDropdown();
+        await sectionComputer.computerChoice();
+        await sectionComputer.selectOptions();
+        console.log('name off the computer:', await sectionComputer.getComputerName());
+    })
 
-    const getCompRes = await request.get('https://demowebshop.tricentis.com/desktops');
-    expect(getCompRes.status()).toBe(200);
+    test('API testing for the same', async ({ request }) => {
 
-    const html = await getCompRes.text();
+        const getCompRes = await request.get('https://demowebshop.tricentis.com/desktops');
+        expect(getCompRes.status()).toBe(200);
 
-    const products = [
-        ...html.matchAll(/<h2 class="product-title">[\s\S]*?<a[^>]*>(.*?)<\/a>/g)
-    ];
+        const html = await getCompRes.text();
 
-    products.forEach(product => {
-        console.log(product[1].trim());
+        const products = [
+            ...html.matchAll(/<h2 class="product-title">[\s\S]*?<a[^>]*>(.*?)<\/a>/g)
+        ];
+
+        expect(products.length).toBeGreaterThan(0);
+
+        products.forEach(product => {
+            console.log(product[1].trim());
+        });
+
+        // request.get()     → fetch page
+        // response.text()   → get HTML
+        // matchAll()        → find all matching product names
+        // forEach()         → loop through each product
+        // console.log()     → print product name
     });
 
-    // request.get()     → fetch page
-    // response.text()   → get HTML
-    // matchAll()        → find all matching product names
-    // forEach()         → loop through each product
-    // console.log()     → print product name
+    test('Negative scenario', async ({request}) => {
 
-  
+        const negRes = await request.get('https://demowebshop.tricentis.com/inavlidpage123');
+        expect(negRes.status()).toBe(404);
+    });
+
+    test('UI + API validation', async ({page, request}) => {
+
+        const apiURL = await request.get('https://demowebshop.tricentis.com/desktops');
+
+        const HTML = await apiURL.text();
+
+        const resMatch = [...HTML.matchAll(/<h2 class="product-title">[\s\S]*?<a[^>]*>(.*?)<\/a>/g)];
+        console.log(resMatch.length)
+
+        const productSearch = resMatch.map(match => match[1].trim());
+
+        await page.goto('https://demowebshop.tricentis.com/desktops');
+
+        for(const name of productSearch) { 
+            await expect(page.getByText(name)).toBeVisible();
+        }
+
+        // await expect(page.getByText(productSearch!)).toBeVisible();
+        console.log('Names of desktops:', productSearch);
+
+
+    })
 })
