@@ -1,0 +1,9 @@
+6
+Names of desktops: [
+  'Build your own cheap computer',
+  'Build your own computer',
+  'Build your own expensive computer',
+  'Desktop PC with CDRW',
+  'Elite Desktop PC',
+  'Simple Computer'
+]

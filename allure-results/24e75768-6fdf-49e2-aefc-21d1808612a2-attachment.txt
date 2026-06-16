@@ -1,0 +1,2 @@
+Shopping cart qnty: (1)
+Your cart is empty (0)

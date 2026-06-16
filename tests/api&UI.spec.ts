@@ -5,7 +5,10 @@
 
 
 import { test, expect, request } from '@playwright/test';
-import { computerSection } from '../pages/api&UI.page';
+import { computerSection, appearlSection } from '../pages/api&UI.page';
+import { userRegistration } from '../pages/registrationTest.page';
+import users from '../TestData/users.json';
+import { generateEmail } from '../utilities/randomData';
 
 const desktopURL = 'https://demowebshop.tricentis.com/desktops';
 
@@ -71,6 +74,7 @@ test.describe('Computer section testcases', () => {
 
         const negRes = await request.get('https://demowebshop.tricentis.com/invalidpage123');
         expect(negRes.status()).toBe(404);
+        console.log('status is:', negRes.status());
     });
 
     test('UI + API validation', async ({ page, request }) => {
@@ -92,7 +96,51 @@ test.describe('Computer section testcases', () => {
 
         // await expect(page.getByText(productSearch!)).toBeVisible();
         console.log('Names of desktops:', productSearch);
+    });
+
+    // Type "Blue Jeans" in the search bar
+    // Click Search button
+    // Assert that "Blue Jeans" appears in the results
+    // Assert the price is 1.00
+
+    test('Blue jeans sorting', async ({ page }) => {
+
+        const ApperalSection = new appearlSection(page);
+        await ApperalSection.navigateJeans();
+    });
 
 
+    test('Add jeans to cart and verify count', async ({ page }) => {
+        // Go to Apparel & Shoes page
+        // Click "Add to cart" on Blue Jeans
+        // Assert the cart count in the top right increases by 1
+
+        const AppearlSection = new appearlSection(page);
+        await AppearlSection.addToCart();
+    })
+
+    test('Task — Remove item from cart', async ({page}) => {
+        // Go to cart page directly (/cart)
+        // Assert Blue Jeans is present in cart
+        // Check the remove checkbox next to Blue Jeans
+        // Click "Update shopping cart"
+        // Assert cart is now empty
+
+        const AppearlSection = new appearlSection(page);
+        await AppearlSection.addToCart();
+        await AppearlSection.verifyCart();
+    })
+
+    test('Task — Checkout flow', async ({page}) => {
+        
+        const UserInvite = new userRegistration(page);
+        const AppearlSection = new appearlSection(page);
+
+        await UserInvite. users[0].firstname,
+        users[0].lastname,
+        generateEmail(),
+        users[0].password
+        await AppearlSection.addToCart();
+        await AppearlSection.checkoutFlow();
     })
 })

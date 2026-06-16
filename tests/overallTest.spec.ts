@@ -20,6 +20,7 @@ test('@smoke Registration functionality', async ({page}) => {
         generateEmail(),
         users[0].password
     );
+    
 });
 
 test('Login functionality', async ({page}) => {

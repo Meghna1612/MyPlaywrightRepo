@@ -1,8 +1,9 @@
-import { Page } from "@playwright/test";
+import { Page, expect } from "@playwright/test";
 
 export class userRegistration {
    
     page:Page;
+    users: any;
 
     constructor (page:Page) {
         this.page = page;
@@ -25,5 +26,8 @@ export class userRegistration {
         await this.page.locator('#Password').fill(password);
         await this.page.locator('#ConfirmPassword').fill(password);
         await this.page.locator('#register-button').click();
+        const registerName = this.page.locator('.account').first();
+        expect(registerName).toHaveText(email);
+        console.log('Register User is:', email);
     }
 }
